@@ -72,7 +72,7 @@ model Inventories {
   description String?
   category    String?
   imageUrl    String?
-  isPublic    Boolean  @default(false)
+  isPublic    Boolean  @default(true)
   version     Int      @default(1)
   createdAt   DateTime @default(now())
 
