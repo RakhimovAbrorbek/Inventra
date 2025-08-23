@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { EmailService } from 'src/email/email.service';
 
 
+
 @Injectable()
 export class UsersService {
   constructor(private readonly prismaService: PrismaService,
@@ -47,7 +48,17 @@ export class UsersService {
   }
 
   findAll() {
-    return this.prismaService.users.findMany()
+    return this.prismaService.users.findMany({
+      select: {
+        id: true,
+        email: true,
+        isActive: true,
+        isAdmin: true,
+        isVerified: true,
+        name: true,
+        username: true
+      }
+    })
   }
 
   findOne(id: string) {
