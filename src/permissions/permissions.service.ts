@@ -21,20 +21,44 @@ export class PermissionsService {
       throw new NotFoundException("Inventory not found")
     }
     const newPermission = await this.prismaService.accessControl.create({
-      data
+      data,
+      include: {
+        inventory: true,
+        user: true
+      }
     })
     return newPermission
   }
 
   findAll() {
-    return this.prismaService.accessControl.findMany()
-  }
-
-  findOne(userId: string) {
-    return this.prismaService.accessControl.findFirst({
-      where: { userId }
+    return this.prismaService.accessControl.findMany({
+      include: {
+        user: true,
+        inventory: true
+      }
     })
   }
 
+  async findByInventory(inventoryId: string) {
+    const users = await this.prismaService.accessControl.findMany({
+      where: { inventoryId },
+      include: {
+        user: true,
+        inventory: true
+      }
+    })
+    return users
+  }
 
+
+  async findByUser(userId: string) {
+    const inventories = await this.prismaService.accessControl.findMany({
+      where: { userId },
+      include: {
+        user: true,
+        inventory: true
+      }
+    })
+    return inventories
+  }
 }

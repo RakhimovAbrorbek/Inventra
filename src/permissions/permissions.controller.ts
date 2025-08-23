@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { PermissionsService } from './permissions.service';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
+import { User } from 'src/common/decorators/user.decorator';
 
 @Controller('permissions')
 export class PermissionsController {
@@ -17,12 +18,14 @@ export class PermissionsController {
     return this.permissionsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.permissionsService.findOne(id);
+  @Get('my-inventories')
+  async getMyInventories(@User('id') userId: string) {
+    return this.permissionsService.findByUser(userId);
   }
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.permissionsService.remove(+id);
-  // }
+
+
+  @Get('inventory/:id/users')
+  async getUsersByInventory(@Param('id') inventoryId: string) {
+    return this.permissionsService.findByInventory(inventoryId);
+  }
 }

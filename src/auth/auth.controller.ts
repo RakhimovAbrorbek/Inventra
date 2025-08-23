@@ -3,8 +3,8 @@ import { AuthService } from './auth.service';
 import { SignUpDto } from './dto/sign-up.dto';
 import { SignInDto } from './dto/sign-in.dto';
 import { Request, Response } from 'express';
-import { GoogleAuthGuard } from './guards/google.auth.guard';
-import { GithubAuthGuard } from './guards/github.auth.guard';
+import { GoogleAuthGuard } from '../common/guards/google.auth.guard';
+import { GithubAuthGuard } from '../common/guards/github.auth.guard';
 
 @Controller('auth')
 export class AuthController {
