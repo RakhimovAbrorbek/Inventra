@@ -48,7 +48,6 @@ model Users {
   accessControl           AccessControl[]
   itemsCreated            Items[]
   comments                Comments[]
-  likes                   Likes[]
 
   @@map("users")
 }
@@ -110,7 +109,6 @@ model Items {
   inventory   Inventories   @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
   creator     Users?        @relation(fields: [creatorId], references: [id], onDelete: SetNull)
   fieldValues FieldValues[]
-  likes       Likes[]
 
   @@unique([inventoryId, customId])
   @@map("items")
@@ -179,16 +177,4 @@ model Comments {
   user      Users       @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("comments")
-}
-
-model Likes {
-  userId    String
-  itemId    String
-  createdAt DateTime @default(now())
-
-  user Users @relation(fields: [userId], references: [id], onDelete: Cascade)
-  item Items @relation(fields: [itemId], references: [id], onDelete: Cascade)
-
-  @@id([userId, itemId])
-  @@map("likes")
 }

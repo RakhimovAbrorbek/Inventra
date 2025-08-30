@@ -1,15 +1,15 @@
-import { IsNotEmpty, IsUUID } from "class-validator";
+import { IsNotEmpty, IsString, IsUUID } from "class-validator";
 
 export class CreateCommentDto {
-  // inventoryId String
-  // userId      String
-  // content     String
-  // createdAt   DateTime @default(now())
-
   @IsUUID()
   @IsNotEmpty()
   inventoryId: string
 
+  @IsUUID()
+  @IsNotEmpty()
+  userId: string
 
-
+  @IsString()
+  @IsNotEmpty()
+  content: string
 }
