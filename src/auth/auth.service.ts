@@ -74,7 +74,7 @@ export class AuthService {
       signed: true
     })
     return {
-      message: "Sign is successfull",
+      message: "Sign in successfull",
       access_token: accessToken
     }
   }

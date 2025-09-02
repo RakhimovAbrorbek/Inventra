@@ -7,7 +7,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { EmailService } from 'src/email/email.service';
 
 
-
 @Injectable()
 export class UsersService {
   constructor(private readonly prismaService: PrismaService,
@@ -61,29 +60,39 @@ export class UsersService {
     })
   }
 
-  findOne(id: string) {
-    return this.prismaService.users.findUnique({ where: { id } })
+  async findOne(id: string) {
+    const user = await this.prismaService.users.findUnique({
+      where: { id }
+    })
+    if (!user) throw new NotFoundException("User not found")
+    return user
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
-    const isExist = await this.findOne(id)
-    if (!isExist) {
-      throw new NotFoundException("User not found")
+    const { password, confirmPassword, ...otherData } = updateUserDto
+    if (password !== confirmPassword) {
+      throw new BadRequestException("Password does not match")
     }
+    const passwordHashed = await bcrypt.hash(password, 10)
+    await this.findOne(id)
     return this.prismaService.users.update({
       where: { id },
-      data: updateUserDto
+      data: {
+        passwordHash: passwordHashed,
+        ...otherData
+      }
     })
   }
 
   async remove(id: string) {
-    const isExist = await this.findOne(id)
-    if (!isExist) {
-      throw new NotFoundException("User not found")
-    }
-    return this.prismaService.users.delete({
+    await this.findOne(id)
+    await this.prismaService.users.delete({
       where: { id }
     })
+    return {
+      succes: true,
+      message: "User deleted successfully!"
+    }
   }
 
   findByEmail(email: string) {
@@ -122,10 +131,7 @@ export class UsersService {
   }
 
   async blockUser(id: string) {
-    const user = this.findOne(id)
-    if (!user) {
-      throw new NotFoundException("User not found")
-    }
+    await this.findOne(id)
     await this.prismaService.users.update({
       where: { id },
       data: {
