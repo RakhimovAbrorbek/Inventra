@@ -11,13 +11,12 @@ import { FieldValuesModule } from './field-values/field-values.module';
 import { TagsModule } from './tags/tags.module';
 import { InventoryTagsModule } from './inventory-tags/inventory-tags.module';
 import { CommentsModule } from './comments/comments.module';
-import { LikesModule } from './likes/likes.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
     isGlobal: true,
     envFilePath: ".env"
-  }), UsersModule, EmailModule, AuthModule, InventoryModule, PermissionsModule, ItemsModule, FieldsModule, FieldValuesModule, TagsModule, InventoryTagsModule, CommentsModule, LikesModule],
+  }), UsersModule, EmailModule, AuthModule, InventoryModule, PermissionsModule, ItemsModule, FieldsModule, FieldValuesModule, TagsModule, InventoryTagsModule, CommentsModule],
   controllers: [],
   providers: [],
 })
