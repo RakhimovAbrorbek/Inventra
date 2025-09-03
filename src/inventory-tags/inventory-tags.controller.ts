@@ -12,6 +12,7 @@ export class InventoryTagsController {
     return this.inventoryTagsService.create(createInventoryTagDto);
   }
 
+
   @Get()
   findAll() {
     return this.inventoryTagsService.findAll();

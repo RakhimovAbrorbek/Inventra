@@ -10,13 +10,14 @@ const ownerMinimalSelect = { id: true, email: true, username: true }
 export class InventoryService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly userService: UsersService  ) {}
+    private readonly userService: UsersService) { }
 
-  async create(data: CreateInventoryDto) {
-    const { ownerId } = data
+  async create(data: CreateInventoryDto, ownerId: string) {
     const exists = await this.userService.findOne(ownerId)
     if (!exists) throw new NotFoundException("User not found")
-    return this.prismaService.inventories.create({ data })
+    return this.prismaService.inventories.create({
+      data: { ...data, ownerId }
+    })
   }
 
   async findAll() {

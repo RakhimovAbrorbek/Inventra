@@ -56,6 +56,9 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException("User not found")
     }
+    if (user.passwordHash === null) {
+      throw new BadRequestException("User not found")
+    }
     const isValid = await bcrypt.compare(password, user.passwordHash)
     if (!isValid) {
       throw new BadRequestException("Email or Password is not valid")

@@ -33,6 +33,7 @@ export class AuthController {
   ) {
     return this.authService.signOut(req, res);
   }
+
   @Get('google')
   @UseGuards(GoogleAuthGuard)
   async googleLogin() {
